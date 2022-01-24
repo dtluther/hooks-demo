@@ -11,6 +11,14 @@ export default function Counter() {
     document.title = `Count: ${count}`;
   }, [count]);
 
+  function handleIncrease() {
+    setCount(count + 1);
+  }
+
+  function handleDecrease() {
+    setCount(count + 1);
+  }
+
   function handleNameChange(e) {
     setName(e.currentTarget.value);
   }
@@ -20,10 +28,10 @@ export default function Counter() {
       <h1>Counter</h1>
       <h3 id="count">{count}</h3>
       <div className="buttons-box">
-        <button className="decrease-btn" onClick={() => setCount(count - 1)}>
+        <button className="decrease-btn" onClick={handleIncrease}>
           Decrease
         </button>
-        <button className="increase-btn" onClick={() => setCount(count + 1)}>
+        <button className="increase-btn" onClick={handleDecrease}>
           Increase
         </button>
       </div>
