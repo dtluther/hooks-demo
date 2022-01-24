@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import ThemeContext from './context';
+import React, { useState, useEffect, useContext } from "react";
+import ThemeContext from "./context";
 
 export default function Counter() {
   const [count, setCount] = useState(0);

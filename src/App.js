@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <ThemeContext.Provider value={'bio-rad'}>
         <ClassicCounter />
-        {/* <Counter /> */}
+        <Counter />
       </ThemeContext.Provider>
     </div>
   );
