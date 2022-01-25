@@ -1,3 +1,27 @@
+1. Build ClassicCounter with just `count` state, increase, and decrease buttons
+2. Build Counter with the same, and show the differences in code
+3. Update the ClassicCounter document title with `componentDidUpdate` and `componentShouldUpdate`
+   1. Don't bind it first, remind them this is a pain point
+      1. When `this.handleIncrease` is called without a binding, this is the `window`, which doesn't have this method
+4. Update the Counter document title with useEffect
+   1. Talk about some more things with `useEffect` later
+      1. How to do it only on mount
+      2. Use different useEffects based on WHAT changes, not when things are happening
+5. Introduce context in the ClassicCounter, and show how it works
+   1. Context is like global variables in React, so we don't have to prop thread. We can provide the context somewhere and consume it in any descendant component of where the context is provided
+   2. May not have seen context because we use Redux here and can use that for global state variables
+   3. Show the render props pattern
+6. Show how simple context can be with the `useContext` hook
+7. Back to useEffect demo, in ClassicCounter introduce another piece of state for the name input
+   1. `handleNameChange` to update the state
+   2. Bind it again
+   3. Add a console.log in `componentDidUpdate` to show how often it's getting called
+      1. Then show how to use `prevState` to only change if it's relevant
+8. In the Counter with hooks, create the same `handleNameChange` function
+   1. Add the console.log in the useEffect
+   2. Make it only runw when the count changes by adding it to the second param
+   3. Talk about thinking in hooks
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
