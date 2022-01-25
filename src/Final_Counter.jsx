@@ -26,7 +26,7 @@ export default function Counter() {
   return (
     <div className={`counter-box ${theme}`}>
       <h1>Counter</h1>
-      <h3 id="count">{count}</h3>
+      <h3 className="count">{count}</h3>
       <div className="buttons-box">
         <button className="decrease-btn" onClick={handleIncrease}>
           Decrease

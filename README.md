@@ -1,4 +1,5 @@
-1. Show the `ClassicCounter` with lifecycle methods first
+1. First run `git clone repo`
+2. Show the `ClassicCounter` with lifecycle methods first
 
    1. Start with just the `count` state and the inactive buttons
    2. Add the `handleIncrease` and `handleDecrease` functionality
@@ -10,29 +11,39 @@
       1. Add the `prevState.count` check to stop the rerendering
    6. Add the `name` input for later
 
-2. Build Counter with the same, and show the differences in code
-3. Update the ClassicCounter document title with `componentDidUpdate` and `componentShouldUpdate`
+3. Build `Counter` with hooks together
+
+   1. In order to have state in functional component, we are going to use our first hook for `count`
+      1. Start by putting what we want in the jsx, and then going backward. Add `count` to jsx and then the onClick handlers for `handleIncrease` and `handleDecrease`
+      2. Then show our first hook: `const [count, setCount] = useState(0)`
+   2. Now let's start building our joke by first creating the state for it. Prompt the audience for how to create the state.
+      1. `const [joke, setJoke] = useState('')`
+
+4. If we make it through and have time, show `context` on the `ClassicCounter`, and then implement it in the `Counter` with everyone
+
+5. Build Counter with the same, and show the differences in code
+6. Update the ClassicCounter document title with `componentDidUpdate` and `componentShouldUpdate`
    1. Don't bind it first, remind them this is a pain point
       1. When `this.handleIncrease` is called without a binding, this is the `window`, which doesn't have this method
-4. Update the Counter document title with useEffect
+7. Update the Counter document title with useEffect
    1. Talk about some more things with `useEffect` later
       1. How to do it only on mount
       2. Use different useEffects based on WHAT changes, not when things are happening
-5. Introduce context in the ClassicCounter, and show how it works
+8. Introduce context in the ClassicCounter, and show how it works
    1. Explain we don't NEED context right now, but if we were creating a new application without Redux, this would be a great way to use a global state variable (for something like a theme)
    2. Context is like global variables in React, so we don't have to prop thread. We can provide the context somewhere and consume it in any descendant component of where the context is provided
    3. May not have seen context because we use Redux here and can use that for global state variables
    4. Show the render props pattern
-6. Show how simple context can be with the `useContext` hook
-7. Back to useEffect demo, in ClassicCounter introduce another piece of state for the name input
-   1. `handleNameChange` to update the state
-   2. Bind it again
-   3. Add a console.log in `componentDidUpdate` to show how often it's getting called
-      1. Then show how to use `prevState` to only change if it's relevant
-8. In the Counter with hooks, create the same `handleNameChange` function
-9. Add the console.log in the useEffect
-10. Make it only runw when the count changes by adding it to the second param
-11. Talk about thinking in hooks
+9. Show how simple context can be with the `useContext` hook
+10. Back to useEffect demo, in ClassicCounter introduce another piece of state for the name input
+11. `handleNameChange` to update the state
+12. Bind it again
+13. Add a console.log in `componentDidUpdate` to show how often it's getting called
+    1. Then show how to use `prevState` to only change if it's relevant
+14. In the Counter with hooks, create the same `handleNameChange` function
+15. Add the console.log in the useEffect
+16. Make it only runw when the count changes by adding it to the second param
+17. Talk about thinking in hooks
 
 # Getting Started with Create React App
 

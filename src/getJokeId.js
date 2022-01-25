@@ -21,4 +21,5 @@ const getJokeId = (key) => {
   return jokesMap[posKey % 10];
 };
 
+export const dadJokeUrl = 'https://icanhazdadjoke.com/j';
 export default getJokeId;
