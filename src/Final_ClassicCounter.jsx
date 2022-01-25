@@ -1,5 +1,6 @@
 import React from 'react';
 import ThemeContext from './context';
+import getJokeId from './getJokeId';
 
 export default class ClassicCounter extends React.Component {
   static contextType = ThemeContext;
@@ -8,6 +9,7 @@ export default class ClassicCounter extends React.Component {
     this.state = {
       count: 0,
       name: '',
+      joke: '',
     };
 
     this.handleIncrease = this.handleIncrease.bind(this);
@@ -16,13 +18,15 @@ export default class ClassicCounter extends React.Component {
   }
 
   componentDidMount() {
-    document.title = `Count: ${this.state.count}`;
+    const joke = this.fetchDadJoke();
+    this.setState({ joke });
   }
 
   componentDidUpdate(_, prevState) {
     if (prevState.count !== this.state.count) {
       console.log('in componentDidUpdate');
-      document.title = `Count: ${this.state.count}`;
+      const joke = this.fetchDadJoke();
+      this.setState({ joke });
     }
   }
 
@@ -38,32 +42,47 @@ export default class ClassicCounter extends React.Component {
     this.setState({ name: e.currentTarget.value });
   }
 
+  async fetchDadJoke() {
+    const jokeId = getJokeId(this.state.count);
+    const response = await fetch(`https://icanhazdadjoke.com/j/${jokeId}`, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+    const jsonResponse = await response.json();
+
+    return jsonResponse.joke;
+  }
+
   render() {
     return (
       <ThemeContext.Consumer>
         {(theme) => (
-          <div className={`counter-box ${theme}`}>
-            <h1>Classic Counter</h1>
-            <h3 className="count">{this.state.count}</h3>
-            <div className="buttons-box">
-              <button className="decrease-btn" onClick={this.handleDecrease}>
-                Decrease
-              </button>
-              <button className="increase-btn" onClick={this.handleIncrease}>
-                Increase
-              </button>
+          <section className="demo">
+            <h1 className="dad-joke">{this.state.joke}</h1>
+            <div className={`counter-box ${theme}`}>
+              <h1>Classic Counter</h1>
+              <h3 className="count">{this.state.count}</h3>
+              <div className="buttons-box">
+                <button className="decrease-btn" onClick={this.handleDecrease}>
+                  Decrease
+                </button>
+                <button className="increase-btn" onClick={this.handleIncrease}>
+                  Increase
+                </button>
+              </div>
+              <div className="name-box">
+                <label htmlFor="name">Name</label>
+                <input
+                  type="text"
+                  className="name"
+                  value={this.state.name}
+                  placeholder="Your Name"
+                  onChange={this.handleNameChange}
+                />
+              </div>
             </div>
-            <div className="name-box">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                className="name"
-                value={this.state.name}
-                placeholder="Your Name"
-                onChange={this.handleNameChange}
-              />
-            </div>
-          </div>
+          </section>
         )}
       </ThemeContext.Consumer>
     );
