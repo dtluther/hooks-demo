@@ -10,12 +10,19 @@ export default function Counter() {
 
   useEffect(() => {
     console.log('In useEffect');
-    async function updateDadJoke() {
-      const joke = await fetchDadJoke();
-      setJoke(joke);
+
+    async function fetchAndSetDadJoke() {
+      const jokeId = getJokeId(count);
+      const response = await fetch(`https://icanhazdadjoke.com/j/${jokeId}`, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+      const jsonResponse = await response.json();
+      setJoke(jsonResponse.joke);
     }
 
-    updateDadJoke();
+    fetchAndSetDadJoke();
   }, [count]);
 
   function handleIncrease() {
@@ -28,17 +35,6 @@ export default function Counter() {
 
   function handleNameChange(e) {
     setName(e.currentTarget.value);
-  }
-
-  async function fetchDadJoke() {
-    const jokeId = getJokeId(count);
-    const response = await fetch(`https://icanhazdadjoke.com/j/${jokeId}`, {
-      headers: {
-        Accept: 'application/json',
-      },
-    });
-    const jsonResponse = await response.json();
-    return jsonResponse.joke;
   }
 
   return (
