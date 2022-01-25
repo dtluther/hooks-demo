@@ -1,6 +1,6 @@
 import React from 'react';
 import ThemeContext from './context';
-import getJokeId from './getJokeId';
+import getJokeId, { dadJokeUrl } from './getJokeId';
 
 export default class ClassicCounter extends React.Component {
   static contextType = ThemeContext;
@@ -44,7 +44,7 @@ export default class ClassicCounter extends React.Component {
 
   async fetchDadJoke() {
     const jokeId = getJokeId(this.state.count);
-    const response = await fetch(`https://icanhazdadjoke.com/j/${jokeId}`, {
+    const response = await fetch(`${dadJokeUrl}/${jokeId}`, {
       headers: {
         Accept: 'application/json',
       },
