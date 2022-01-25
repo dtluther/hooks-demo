@@ -1,117 +1,75 @@
-1. First run `git clone repo`
-2. Show the `ClassicCounter` with lifecycle methods first
+# Hooks Demo
 
-   1. Start with just the `count` state and the inactive buttons
-   2. Add the `handleIncrease` and `handleDecrease` functionality
-      1. Make sure to bind them, everyone's favorite thing
-   3. Enable the `fetchDadJoke` function, and enable it on `componentDidMount`
-   4. Then enable it on `componentDidUpdate` without checking the `prevState`
-      1. Should be working fine
-   5. Add the `console.log` to `componentDidMount` to show the constant rerendering from the `fetchDadJoke` API call
-      1. Add the `prevState.count` check to stop the rerendering
-   6. Add the `name` input for later
+1.  First run `git clone repo`
+2.  Show the `ClassicCounter` with lifecycle methods first
 
-3. Build `Counter` with hooks together
+    1. Start with just the `count` state and the inactive buttons
+    2. Add the `handleIncrease` and `handleDecrease` functionality
+       1. Make sure to bind them, everyone's favorite thing
+    3. Enable the `fetchDadJoke` function, and enable it on `componentDidMount`
+    4. Then enable it on `componentDidUpdate` without checking the `prevState`
+       1. Should be working fine
+    5. Add the `console.log` to `componentDidMount` to show the constant rerendering from the `fetchDadJoke` API call
+       1. Add the `prevState.count` check to stop the rerendering
+    6. Add the `name` input for later
 
-   1. In order to have state in functional component, we are going to use our first hook for `count`
-      1. Start by putting what we want in the jsx, and then going backward. Add `count` to jsx and then the onClick handlers for `handleIncrease` and `handleDecrease`
-      2. Then show our first hook: `const [count, setCount] = useState(0)`
-   2. Now let's start building our joke by first creating the state for it. Prompt the audience for how to create the state.
-      1. `const [joke, setJoke] = useState('')`
+3.  Build `Counter` with hooks together
 
-4. If we make it through and have time, show `context` on the `ClassicCounter`, and then implement it in the `Counter` with everyone
+    1.  In order to have state in functional component, we are going to use our first hook for `count`
+        1. Start by putting what we want in the jsx, and then going backward. Add `count` to jsx and then the onClick handlers for `handleIncrease` and `handleDecrease`
+        2. Then show our first hook: `const [count, setCount] = useState(0)`
+    2.  Now let's start building our joke by first creating the state for it. Prompt the audience for how to create the state.
 
-5. Build Counter with the same, and show the differences in code
-6. Update the ClassicCounter document title with `componentDidUpdate` and `componentShouldUpdate`
-   1. Don't bind it first, remind them this is a pain point
-      1. When `this.handleIncrease` is called without a binding, this is the `window`, which doesn't have this method
-7. Update the Counter document title with useEffect
-   1. Talk about some more things with `useEffect` later
-      1. How to do it only on mount
-      2. Use different useEffects based on WHAT changes, not when things are happening
-8. Introduce context in the ClassicCounter, and show how it works
-   1. Explain we don't NEED context right now, but if we were creating a new application without Redux, this would be a great way to use a global state variable (for something like a theme)
-   2. Context is like global variables in React, so we don't have to prop thread. We can provide the context somewhere and consume it in any descendant component of where the context is provided
-   3. May not have seen context because we use Redux here and can use that for global state variables
-   4. Show the render props pattern
-9. Show how simple context can be with the `useContext` hook
-10. Back to useEffect demo, in ClassicCounter introduce another piece of state for the name input
-11. `handleNameChange` to update the state
-12. Bind it again
-13. Add a console.log in `componentDidUpdate` to show how often it's getting called
-    1. Then show how to use `prevState` to only change if it's relevant
-14. In the Counter with hooks, create the same `handleNameChange` function
-15. Add the console.log in the useEffect
-16. Make it only runw when the count changes by adding it to the second param
-17. Talk about thinking in hooks
+        1. Before we start with the joke, talk about the way we think with hooks:
+           1. We used to do lifecycle methods and think of WHEN we want to do something. With hooks, we focus more on what's changing, and what we EFFECTS we want to happen when something changes
+           2. Introduce `useEffect`, and put a `console.log`
+              1. Show the basic version covers `componentDidMount` and `componentDidUpdate` in one function
+           3. Now we want to fetch a dad joke on mount and when the count changes
+        2. `const [joke, setJoke] = useState('')`
+        3. Create the async function `fetchDadJoke`
+           1. use `getJokeId` to get the `jokeId` from the count
+           2. `fetch`
+           ```
+           const response = await fetch(`${dadJokeUrl}/${jokeId}`, {
+             headers: {
+               Accept: 'application/json',
+             },
+           });
+           ```
+           1. `await` the `response.json()`, and return the `jsonResponse.joke`
+        4. Call the function in `useEffect`, and `setJoke` with the return value
+           1. Should show an error, so we'll add `fetchDadJoke` to the dep array
+           2. Then we should see another more complex error around the function name
+           3. Now we can do this with a better practice (for now) of defining the async function in `useEffect`
+        5. Define `fetchAndSetDadJoke` in `useEffect`, and call it:
 
-# Getting Started with Create React App
+           ```
+             useEffect(() => {
+               console.log('In useEffect');
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+               async function fetchAndSetDadJoke() {
+                 const jokeId = getJokeId(count);
+                 const response = await fetch(`${dadJokeUrl}/${jokeId}`, {
+                   headers: {
+                     Accept: 'application/json',
+                   },
+                 });
+                 const jsonResponse = await response.json();
+                 setJoke(jsonResponse.joke);
+               }
 
-## Available Scripts
+               fetchAndSetDadJoke();
+             });
+           ```
 
-In the project directory, you can run:
+           1. Should work. Explain that `useEffect` can not take an async callback at this point, and there are experimental features in React to use something called `Suspense` for data fetching in the future. At this point, this is one of the most common ways to do async calls in `useEffect`
+           2. Look at the console, and notice useEffect is being called twice because both the `count` and the `joke` are updating. Similar to `ClassicCounter`, we only want the fetch to be called when the `count` changes. Update in the `Counter`.
 
-### `yarn start`
+    3.  Add the `name` element, and prompt them to add state for it
+        1. Also create a `handleNameChange` function
+    4.  Show how to make the existing `useEffect` fire for only `count` and `name` changes
+    5.  Show how to make a separate `useEffect` for when the name changes and print the new name to the console.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+4.  If we make it through and have time, show `context` on the `ClassicCounter`, and then implement it in the `Counter` with everyone
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
