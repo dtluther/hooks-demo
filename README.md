@@ -1,6 +1,6 @@
 # Hooks Demo
 
-1.  First run `git clone repo`
+1.  First run `git clone https://github.com/dtluther/counter-with-hooks.git`
 2.  Show the `ClassicCounter` with lifecycle methods first
 
     1. Start with just the `count` state and the inactive buttons
