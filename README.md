@@ -8,9 +8,10 @@
       1. How to do it only on mount
       2. Use different useEffects based on WHAT changes, not when things are happening
 5. Introduce context in the ClassicCounter, and show how it works
+   1. Explain we don't NEED context right now, but if we were creating a new application without Redux, this would be a great way to use a global state variable (for something like a theme)
    1. Context is like global variables in React, so we don't have to prop thread. We can provide the context somewhere and consume it in any descendant component of where the context is provided
-   2. May not have seen context because we use Redux here and can use that for global state variables
-   3. Show the render props pattern
+   1. May not have seen context because we use Redux here and can use that for global state variables
+   1. Show the render props pattern
 6. Show how simple context can be with the `useContext` hook
 7. Back to useEffect demo, in ClassicCounter introduce another piece of state for the name input
    1. `handleNameChange` to update the state

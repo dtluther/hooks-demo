@@ -12,6 +12,16 @@ body,
   text-align: center;
 }
 
+.demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dad-joke {
+  height: 100px;
+}
+
 .counter-box {
   background-color: lightgray;
   width: 300px;
